@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Untuk Memoi 💌</title>
+  <style>
+    :root {
+      --bg-day: #fff0f5;
+      --bg-night: #2c233d;
+      --text-day: #4d2c3d;
+      --text-night: #ffffff;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      transition: background 1s, color 1s;
+      background: var(--bg-day);
+      color: var(--text-day);
+      min-height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .container {
+      z-index: 2;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      min-height: 100vh;
+      text-align: center;
+    }
+
+    .message {
+      font-size: 1.4em;
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: 20px;
+      background-color: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(5px);
+      max-width: 90%;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .gif img {
+      margin-top: 20px;
+      max-width: 250px;
+      border-radius: 15px;
+    }
+
+    h1 {
+      font-size: 2.3em;
+      margin-bottom: 10px;
+    }
+
+    audio {
+      display: none;
+    }
+
+    .loading::after {
+      content: '';
+      display: inline-block;
+      width: 1em;
+      text-align: left;
+      animation: dots 1s steps(3, end) infinite;
+    }
+
+    @keyframes dots {
+      0% { content: ''; }
+      33% { content: '.'; }
+      66% { content: '..'; }
+      100% { content: '...'; }
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .stars, .star {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .star {
+      width: 2px;
+      height: 2px;
+      background: rgb(244, 255, 97);
+      position: absolute;
+      animation: shoot 3s linear infinite;
+      opacity: 0;
+    }
+
+    @keyframes shoot {
+      0% {
+        transform: translateX(0) translateY(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateX(-100vw) translateY(100vh);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="stars" id="stars"></div>
+
+  <div class="container">
+    <h1>Hai, Meimei 🌸</h1>
+    <div class="message" id="messageBox"><span class="loading">Memuat pesan untukmu</span></div>
+    <div class="gif hidden" id="gifContainer">
+      <img id="gifImage" src="" alt="gif lucu" />
+    </div>
+  </div>
+
+  <audio autoplay loop id="bgMusic">
+    <source src="musiklembut.mp3" type="audio/mpeg" />
+  </audio>
+
+  <script>
+    const msgBox = document.getElementById("messageBox");
+    const gifImg = document.getElementById("gifImage");
+    const gifContainer = document.getElementById("gifContainer");
+    const body = document.body;
+
+    function getMessageAndGif(hour) {
+      if (hour >= 6 && hour < 12) {
+        return {
+          msg: "Selamat pagiii 🌤️<br>Semoga harimu manis seperti senyummu~ Jangan lupa sarapan yaah 🥖🍞🥐🥨🥪🥯",
+          gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExa2JhNXZmcXZhNmNmM2M4cHRqOWZwNnY1ZWRydXcza3I2MjU4ZTBuZiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/3KYGq82Lb74TbVXLVc/giphy.gif"
+        };
+      } else if (hour >= 12 && hour < 17) {
+        return {
+          msg: "Haloooo 💕<br>Jangan lupa minum yah 🥛 dan ngepuff asiiik + maem siaaang 🍓",
+          gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMTZkY2FveHBqdWRycmNqZ2p4YTI4MHptZDd2enBldTlkcXB5MTlnbCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/2ya7xLyEeynlZM4FCw/giphy.gif"
+        };
+      } else if (hour >= 17 && hour < 19) {
+        return {
+          msg: "Sore Mbaaak 🍃<br>Semangaaat dikit lagi pulang, nanti hati - hati di jalan ya~ ⚠️⚠️⚠️ kalau bisa berkabar~ 🫣🫣🫣",
+          gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdDAyZTBzdnFzYTBuNTRsYnhia2hkZG50ZTJpNDV3Zm0xazY0ZTR0YSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/G3jNy0bvbuVSWS13ZF/giphy.gif"
+        };
+      } else if (hour >= 19 && hour < 23) {
+        return {
+          msg: "Malaaaam 🌙<br>Kamu hebat hari ini 🙌🙌🙌. Sung bersih - bersih 🧖🏻‍♀️🫧🧴 abis itu rebahan rilek 🛌🛌🛌",
+          gif: "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3dHo5YXBxMWh6andwaWs5Znllajlubm5rZ2dqY2ZlcWdzdmx1YmpqdiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/ClDc4yPzTY8IszqcGW/giphy.gif"
+        };
+      } else {
+        return {
+          msg: "Waktunya tidur 😴<br>Tenangkan hati, everythings gonna be alright. Wish I could hug you for real, but for now… here's one from afar 🫂🫶🏻🥹❤️‍🩹",
+          gif: "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3NTF2YWozYnZkdjhsbmw3a3RqNnp4ZGNocW95Yjh0dHg0NjllaW43ayZlcD12MV9naWZzX3NlYXJjaCZjdD1n/kj0mQIbv8gAEyaQ0Ac/giphy.gif"
+        };
+      }
+    }
+
+    function applyTheme(hour) {
+      if (hour >= 6 && hour < 18) {
+        body.style.background = "var(--bg-day)";
+        body.style.color = "var(--text-day)";
+      } else {
+        body.style.background = "var(--bg-night)";
+        body.style.color = "var(--text-night)";
+      }
+    }
+
+    function createStars(count = 10) {
+      const starsContainer = document.getElementById('stars');
+      for (let i = 0; i < count; i++) {
+        const star = document.createElement('div');
+        star.classList.add('star');
+        star.style.top = Math.random() * 100 + '%';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.animationDelay = `${Math.random() * 5}s`;
+        star.style.opacity = 0;
+        starsContainer.appendChild(star);
+      }
+    }
+
+    window.onload = () => {
+      const hour = new Date().getHours();
+      applyTheme(hour);
+      createStars(20);
+
+      const audio = document.getElementById("bgMusic");
+      audio.volume = 0.2;
+
+      document.body.addEventListener("click", () => {
+        if (audio.paused) {
+          audio.play();
+        }
+      }, { once: true });
+
+      setTimeout(() => {
+        const { msg, gif } = getMessageAndGif(hour);
+        msgBox.innerHTML = msg;
+        gifImg.src = gif;
+        gifContainer.classList.remove("hidden");
+      }, 2200);
+    };
+  </script>
+</body>
+</html>
