@@ -2,198 +2,200 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Untuk Memoi 💌</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reminder for Meimei</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cute+Font&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg-day: #fff0f5;
-      --bg-night: #2c233d;
-      --text-day: #4d2c3d;
-      --text-night: #ffffff;
+      --day-bg: linear-gradient(to bottom, #fff4f4, #ffeaea);
+      --night-bg: linear-gradient(to bottom, #1e1e2f, #2c2c54);
+      --day-color: #333;
+      --night-color: #f5cce8;
     }
 
     body {
       margin: 0;
       padding: 0;
-      font-family: 'Comic Sans MS', cursive, sans-serif;
-      transition: background 1s, color 1s;
-      background: var(--bg-day);
-      color: var(--text-day);
-      min-height: 100vh;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .container {
-      z-index: 2;
-      position: relative;
+      font-family: 'Cute Font', sans-serif;
+      text-align: center;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      flex-direction: column;
       min-height: 100vh;
-      text-align: center;
+      background: var(--day-bg);
+      color: var(--day-color);
+      transition: background 1s, color 1s;
+      overflow: hidden;
     }
 
-    .message {
-      font-size: 1.4em;
-      margin-top: 20px;
-      padding: 20px;
-      border-radius: 20px;
-      background-color: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(5px);
+    #message-container {
       max-width: 90%;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      padding: 20px;
+      z-index: 2;
+      position: relative;
     }
 
-    .gif img {
+    h1, h2, p {
+      margin: 10px 0;
+    }
+
+    img {
+      width: 80%;
+      max-width: 150px;
+      border-radius: 20px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .button-group {
       margin-top: 20px;
-      max-width: 250px;
-      border-radius: 15px;
     }
 
-    h1 {
-      font-size: 2.3em;
-      margin-bottom: 10px;
+    button {
+      font-family: 'Cute Font', sans-serif;
+      padding: 10px 20px;
+      font-size: 1.3rem;
+      margin: 5px;
+      border-radius: 12px;
+      border: none;
+      background-color: #ffb3c6;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #ff87a2;
+    }
+
+    #followup-message {
+      margin-top: 20px;
+      font-size: 1.3rem;
+    }
+
+    .stars {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      animation: falling 2s linear infinite;
+      top: -10px;
+    }
+
+    @keyframes falling {
+      to {
+        transform: translateY(100vh) translateX(50px);
+        opacity: 0;
+      }
     }
 
     audio {
       display: none;
     }
-
-    .loading::after {
-      content: '';
-      display: inline-block;
-      width: 1em;
-      text-align: left;
-      animation: dots 1s steps(3, end) infinite;
-    }
-
-    @keyframes dots {
-      0% { content: ''; }
-      33% { content: '.'; }
-      66% { content: '..'; }
-      100% { content: '...'; }
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    .stars, .star {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 1;
-    }
-
-    .star {
-      width: 2px;
-      height: 2px;
-      background: rgb(244, 255, 97);
-      position: absolute;
-      animation: shoot 3s linear infinite;
-      opacity: 0;
-    }
-
-    @keyframes shoot {
-      0% {
-        transform: translateX(0) translateY(0);
-        opacity: 0;
-      }
-      10% {
-        opacity: 1;
-      }
-      100% {
-        transform: translateX(-100vw) translateY(100vh);
-        opacity: 0;
-      }
-    }
   </style>
 </head>
 <body>
-  <div class="stars" id="stars"></div>
-
-  <div class="container">
-    <h1>Hai, Memoi 💕</h1>
-    <div class="message" id="messageBox"><span class="loading">Memuat pesan untukmu</span></div>
-    <div class="gif hidden" id="gifContainer">
-      <img id="gifImage" src="" alt="gif lucu" />
-    </div>
-  </div>
-
   <audio autoplay loop id="bgMusic">
     <source src="musiklembut.mp3" type="audio/mpeg" />
   </audio>
 
+  <div id="message-container">
+    <h1 id="main-message">Memuat pesan untukmu...</h1>
+    <img id="gif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExc2lybnVhc3lwbjE0cXlqMmUxNnlxeXpwcW8yMGdycGoxbTNpdXljYiZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/LYOjnNlrhr22gSI6i7/giphy.gif" alt="GIF sesuai waktu" />
+    <div id="question" style="display:none;">
+      <h2>Bagaimana perasaanmu sekarang?</h2>
+      <div class="button-group">
+        <button onclick="selectMood('happy')">😋 Cihuuuy Aku Seneng Bangeeet</button>
+        <button onclick="selectMood('sad')">🥺 Acu Sedih</button>
+        <button onclick="selectMood('neutral')">🫨 Nano Nano Nich</button>
+      </div>
+    </div>
+    <p id="followup-message"></p>
+  </div>
+
   <script>
-    const msgBox = document.getElementById("messageBox");
-    const gifImg = document.getElementById("gifImage");
-    const gifContainer = document.getElementById("gifContainer");
-    const body = document.body;
+    const messages = {
+      pagi: "Pagiii kamuuu 🫠🫴💗",
+      siang: "Hawoooo, selamat siang mbaaak 💐🌷🌹🌸🌺",
+      sore: "Anak kicik suka pare, nona cantik selamat soreee ✨🥰",
+      malam: "Malaaaam memoiii 🌌🌠💫",
+      tidur: "Waktunya apa??? yaaa benar boboooo 😴😪🥱💤🛌🏼"
+    };
 
-    function getMessageAndGif(hour) {
-      if (hour >= 6 && hour < 12) {
-        return {
-          msg: "Pagiii Cantiiik 🌤️<br>Semoga hari ini kamu kuat yaaa, jangan lupa sarapan 🥚🥞🥑🥐🍳",
-          gif: "https://media1.giphy.com/media/v1.Y2lkPTZjMDliOTUydXR4Y3UyNGp2YTZiaWw4eGMxMWYxajdhZ3lsZzB4MjZxZXhxMW5zYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Wj7lNjMNDxSmc/giphy.gif"
-        };
-      } else if (hour >= 12 && hour < 17) {
-        return {
-          msg: "Hawooo 💕<br>Minuuum ayooo minuuuum 🥛🥛🥛 maem apa kamu siang ini??? ngepuff agar mengurangi beban 🌬️🌬️🌬️",
-          gif: "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGxvNG0zODg2NHFtNjl3cnA0YXdvbXhhenp1bWJ1b3p5MGFlb21peSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/WynKmCK0LwykM/giphy.gif"
-        };
-      } else if (hour >= 17 && hour < 19) {
-        return {
-          msg: "Soreee Mbak'e ❤️‍🩹<br>Waktu sudah menunjukkan waktu normalnya orang balik kerja... semoga hari ini kamu gak lembur ya... tapi kalo lembur semangaaaat yaaa... i'm here if you need me 🙌🙌🙌 free for you, busy for others 😎😎😎 slebeeeewwww 💃🕺 oh iyaaa be careful on your way home yaaa nanti ❤️‍🩹❤️‍🩹❤️‍🩹 berkabar kalau mau dan bisa ✌️✌️✌️",
-          gif: "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExbTVyem91bmxmenJkbHF5bXZleTMxZW8zcGlncHI5ZHJwNTk2YmFzZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/BbmDhO2gx3o96CpVM1/giphy.gif"
-        };
-      } else if (hour >= 19 && hour < 22) {
-        return {
-          msg: "Malaaam Memoiiii 🌙<br>Apakah kamu sudah dirumah??? kalau belum hati - hati ya 🥺🥺🥺, kalau sudah selamat bersih - bersih 🛀🛀🛀 + main hp and chill 🛌🛌🛌",
-          gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNm9kY3IzMWppbnlvYnVsams4NzVjZWN0NzB5MmN6bm16ZzliNHE0cSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/V216rdoG6TUVvXA0Tb/giphy.gif"
-        };
-      } else {
-        return {
-          msg: "It's time to sleep, meiii 😴<br>U did a great job today... for a prize i give u a hug... virtual hug 🫂🫶🏻🥹❤️‍🩹",
-          gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ2l0NmU5aThsNHQxaGlhZmlsdnFodXpxdXptM2NxZGJsczRrYnMyNyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/BXrwTdoho6hkQ/giphy.gif"
-        };
+    const followUpMessages = {
+      pagi: {
+        happy: "Aku juga ikut seneeeng jadinya ❤️‍🔥🫠 Semoga hari ini lancar yaaa 🫶🏻🌷💕🎀🌸",
+        sad: "Semangaaat ya walaupun hari diawali dengan berat tapi aku yakin kamu bisa melewatinya 💖💗🥰💞",
+        neutral: "Yo yo ayooo yo yo ayooo kamu kuaaat 💪 tapi inget buat jangan push yourself too far again yes 😍✨🫶🏻🫰"
+      },
+      siang: {
+        happy: "Yeaaaay udah setengah hari niiii 😁 kamu maem siang ya biar gak terlalu lemesss dan yang paling penting adalah... MINUUUUUUUM 🥛🥛🥛 dua - duanya penting jadi jangan sampai terlewat ya 🥰🥰🥰",
+        sad: "Istirahat sebentar dulu sayaaang, ngepuff biar release stress atau mau misuh misuh bisa langsung WA acu yaaa hihihi 🤭🤭🤭",
+        neutral: "Rileksasi dulu pegangan kalau bingung... apa perlu acu otw biar bisa jadi pegangan kamu??? ihiiiiy 🤪🤪🤪"
+      },
+      sore: {
+        happy: "Pulang tepat waktu kah? yeaaaaay bisa istirahat lebih cepaaat, kalo gitu hati - hati nanti di jalan yaaa atau ada sesuatu yang menyenangkan hari ini?? menerima segala bentuk cerita kamuuu 🤙🤙🤙",
+        sad: "Apa yang membuat mu sedih mei? 🥺🥺🥺 terpaksa lembur lagi ya? take it easy mei jangan dipaksakan 😔😔😔 remember u push urself too muuuch 😢😢😢 atau ada alasan lain?? acu disini kalo mau sharing 🤗",
+        neutral: "Apa?? apaa?? why u merasa nano - nano??? nano - nano is a no no laaa... so darling take my hand~ nothing beats a jet2 holiday 🎵🎵🎵"
+      },
+      malam: {
+        happy: "Selamat menikmati malam ini dengan mood yang bagus meiii 😃😃😃, sudah sampai rumah ya??? sung ae sung bersih - bersih, abis itu apa? ya benar rileeek 😎🤙",
+        sad: "Hari ini terasa berat ya??? 🥺🥀❤️‍🩹 semangat kamuuu, kalau baru balik hati - hati yaaah... berkabar 🥺👉👈",
+        neutral: "Tariiiik nafaaas lalu hembuskaaan perlaahaaan 😮‍💨😮‍💨😮‍💨 tenangkan hati dan pikiran di malam hari ini kamu sudah berhasil melaluinya dengan baiiik... i'm so proud of uuuu 🫶🏻🥹❤️‍🩹"
+      },
+      tidur: {
+        happy: "Yeaaay kamu senang 💗🥰💞 Sleep tight meiii, u did a great job todaaay... so so sooo proud of uuu 💝💐🌍💕",
+        sad: "Kenapa kamu sedih malam ini meiii??? kalau mau cerita aku pasti menerima... kalau tidak mau juga tidak apa... u did good today 🥺🫶🏻💞",
+        neutral: "U did great today meiii 🥰🥰🥰 peluk dari acu biar kamu gak nano - nano 🫂🎀🫶🏻💌💓"
       }
-    }
+    };
 
-    function applyTheme(hour) {
-      if (hour >= 6 && hour < 18) {
-        body.style.background = "var(--bg-day)";
-        body.style.color = "var(--text-day)";
-      } else {
-        body.style.background = "var(--bg-night)";
-        body.style.color = "var(--text-night)";
-      }
-    }
+    const gifLinks = {
+      pagi: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExand3dHRrZjQ3ZGVhaHU3cXduejQ1N2N3OXY2ZDk3bWNwanhvMGVlbSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/IwZ4nbKj3EnNLNNtu8/giphy.gif",
+      siang: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdHpzYWV4bmEwcGluMnN0czVjZXJqaTR0amtzazc3N2dkNzB4MWQ5ZyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/ZgTRcH0SbiLV1wolnR/giphy.gif",
+      sore: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMDA3eTBhNXIybmEycXR5cHA3ZHg2NndhbHdtMzIzMnV5NGNzOThvMCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/LOEgEYZHyGbXY8KgA3/giphy.gif",
+      malam: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNThmYjEzMTRqbm5qYWFyczlpenNqd2NnOHZhZjY5eXZucTIxcDdmcSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/KFCcK9bQRhh01U6lpS/giphy.gif",
+      tidur: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbjQwbTdrdzNmaTl3ejJjbXl0MnM3ZWtiN2dndHNlMTltc2h4YWwweSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/WP1Z0FfnuMuXqPvDlj/giphy.gif"
+    };
 
-    function createStars(count = 10) {
-      const starsContainer = document.getElementById('stars');
-      for (let i = 0; i < count; i++) {
-        const star = document.createElement('div');
-        star.classList.add('star');
-        star.style.top = Math.random() * 100 + '%';
-        star.style.left = Math.random() * 100 + '%';
-        star.style.animationDelay = `${Math.random() * 5}s`;
-        star.style.opacity = 0;
-        starsContainer.appendChild(star);
-      }
-    }
-
-    window.onload = () => {
+    function getTimePeriod() {
       const hour = new Date().getHours();
-      applyTheme(hour);
-      createStars(20);
+      if (hour >= 5 && hour < 12) return "pagi";
+      if (hour >= 12 && hour < 17) return "siang";
+      if (hour >= 17 && hour < 19) return "sore";
+      if (hour >= 19 && hour < 22) return "malam";
+      return "tidur";
+    }
 
-      const audio = document.getElementById("bgMusic");
+    const timePeriod = getTimePeriod();
+    const mainMessage = document.getElementById("main-message");
+    const followup = document.getElementById("followup-message");
+    const gif = document.getElementById("gif");
+
+    setTimeout(() => {
+      mainMessage.innerText = messages[timePeriod];
+      gif.src = gifLinks[timePeriod];
+      document.getElementById("question").style.display = "block";
+    }, 2000);
+
+    const isNight = ["malam", "tidur"].includes(timePeriod);
+    if (isNight) {
+      document.body.style.background = "var(--night-bg)";
+      document.body.style.color = "var(--night-color)";
+      setInterval(() => {
+        const star = document.createElement("div");
+        star.classList.add("stars");
+        star.style.left = Math.random() * window.innerWidth + "px";
+        document.body.appendChild(star);
+        setTimeout(() => star.remove(), 2000);
+      }, 400);
+    }
+
+    function selectMood(mood) {
+      followup.innerText = followUpMessages[timePeriod][mood];
+    }
+
+     const audio = document.getElementById("bgMusic");
       audio.volume = 0.2;
 
       document.body.addEventListener("click", () => {
@@ -201,20 +203,6 @@
           audio.play();
         }
       }, { once: true });
-
-      setTimeout(() => {
-        const { msg, gif } = getMessageAndGif(hour);
-        msgBox.innerHTML = msg;
-        gifImg.src = gif;
-        gifContainer.classList.remove("hidden");
-      }, 2200);
-    };
   </script>
 </body>
-
 </html>
-
-
-
-
-
