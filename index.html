@@ -1,96 +1,47 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>For You Mei</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cute+Font&display=swap" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hi Meimoi!</title>
   <style>
-    :root {
-      --day-bg: linear-gradient(to bottom, #fff4f4, #ffeaea);
-      --night-bg: linear-gradient(to bottom, #1e1e2f, #2c2c54);
-      --day-color: #333;
-      --night-color: #f5cce8;
-    }
-
     body {
       margin: 0;
-      padding: 0;
-      font-family: 'Cute Font', sans-serif;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      background: var(--day-bg);
-      color: var(--day-color);
-      transition: background 1s, color 1s;
-      overflow: hidden;
-    }
-
-    #message-container {
-      max-width: 90%;
       padding: 20px;
-      z-index: 2;
-      position: relative;
+      font-family: sans-serif;
+      text-align: center;
+      transition: background 1s, color 1s;
     }
-
-    h1, h2, p {
-      margin: 10px 0;
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
     }
-
+    p {
+      font-size: 1.1em;
+      margin: 20px auto;
+      max-width: 90%;
+      line-height: 1.5;
+    }
     img {
-      width: 80%;
-      max-width: 150px;
-      border-radius: 20px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      max-width: 100%;
+      height: auto;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
-
-    .button-group {
-      margin-top: 20px;
-    }
-
-    button {
-      font-family: 'Cute Font', sans-serif;
-      padding: 10px 20px;
-      font-size: 1.3rem;
-      margin: 5px;
-      border-radius: 12px;
-      border: none;
-      background-color: #ffb3c6;
-      color: #fff;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #ff87a2;
-    }
-
-    #followup-message {
-      margin-top: 20px;
-      font-size: 1.3rem;
-    }
-
-    .stars {
-      position: absolute;
-      width: 2px;
-      height: 2px;
-      background: white;
-      animation: falling 2s linear infinite;
-      top: -10px;
-    }
-
-    @keyframes falling {
-      to {
-        transform: translateY(100vh) translateX(50px);
-        opacity: 0;
-      }
-    }
-
     audio {
       display: none;
+    }
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: #2c2c54;
+        color: #f5cce8;
+      }
+    }
+    @media (prefers-color-scheme: light) {
+      body {
+        background: #fff4f4;
+        color: #333;
+      }
     }
   </style>
 </head>
@@ -98,104 +49,11 @@
   <audio autoplay loop id="bgMusic">
     <source src="musiklembut.mp3" type="audio/mpeg" />
   </audio>
-
-  <div id="message-container">
-    <h1 id="main-message">Memuat pesan untukmu...</h1>
-    <img id="gif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExc2lybnVhc3lwbjE0cXlqMmUxNnlxeXpwcW8yMGdycGoxbTNpdXljYiZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/LYOjnNlrhr22gSI6i7/giphy.gif" alt="GIF sesuai waktu" />
-    <div id="question" style="display:none;">
-      <h2>Bagaimana perasaanmu sekarang?</h2>
-      <div class="button-group">
-        <button onclick="selectMood('happy')">😋 Cihuuuy Aku Seneng Bangeeet</button>
-        <button onclick="selectMood('sad')">🥺 Acu Sedih</button>
-        <button onclick="selectMood('neutral')">🫨 Nano Nano Nich</button>
-      </div>
-    </div>
-    <p id="followup-message"></p>
-  </div>
-
-  <script>
-    const messages = {
-      pagi: "Pagiii kamuuu 🫠🫴💗",
-      siang: "Hawoooo, selamat siang mbaaak 💐🌷🌹🌸🌺",
-      sore: "Anak kicik suka pare, nona cantik selamat soreee ✨🥰",
-      malam: "Malaaaam memoiii 🌌🌠💫",
-      tidur: "Waktunya apa??? yaaa benar boboooo 😴😪🥱💤🛌🏼"
-    };
-
-    const followUpMessages = {
-      pagi: {
-        happy: "Aku juga ikut seneeeng jadinya ❤️‍🔥🫠 Semoga hari ini lancar yaaa 🫶🏻🌷💕🎀🌸",
-        sad: "Semangaaat ya walaupun hari diawali dengan berat tapi aku yakin kamu bisa melewatinya 💖💗🥰💞",
-        neutral: "Yo yo ayooo yo yo ayooo kamu kuaaat 💪 tapi inget buat jangan push yourself too far again yes 😍✨🫶🏻🫰"
-      },
-      siang: {
-        happy: "Yeaaaay udah setengah hari niiii 😁 kamu maem siang ya biar gak terlalu lemesss dan yang paling penting adalah... MINUUUUUUUM 🥛🥛🥛 dua - duanya penting jadi jangan sampai terlewat ya 🥰🥰🥰",
-        sad: "Istirahat sebentar dulu sayaaang, ngepuff biar release stress atau mau misuh misuh bisa langsung WA acu yaaa hihihi 🤭🤭🤭",
-        neutral: "Rileksasi dulu pegangan kalau bingung... apa perlu acu otw biar bisa jadi pegangan kamu??? ihiiiiy 🤪🤪🤪"
-      },
-      sore: {
-        happy: "Pulang tepat waktu kah? yeaaaaay bisa istirahat lebih cepaaat, kalo gitu hati - hati nanti di jalan yaaa atau ada sesuatu yang menyenangkan hari ini?? menerima segala bentuk cerita kamuuu 🤙🤙🤙",
-        sad: "Apa yang membuat mu sedih mei? 🥺🥺🥺 terpaksa lembur lagi ya? take it easy mei jangan dipaksakan 😔😔😔 remember u push urself too muuuch 😢😢😢 atau ada alasan lain?? acu disini kalo mau sharing 🤗",
-        neutral: "Apa?? apaa?? why u merasa nano - nano??? nano - nano is a no no laaa... so darling take my hand~ nothing beats a jet2 holiday 🎵🎵🎵"
-      },
-      malam: {
-        happy: "Selamat menikmati malam ini dengan mood yang bagus meiii 😃😃😃, sudah sampai rumah ya??? sung ae sung bersih - bersih, abis itu apa? ya benar rileeek 😎🤙",
-        sad: "Hari ini terasa berat ya??? 🥺🥀❤️‍🩹 semangat kamuuu, kalau baru balik hati - hati yaaah... berkabar 🥺👉👈",
-        neutral: "Tariiiik nafaaas lalu hembuskaaan perlaahaaan 😮‍💨😮‍💨😮‍💨 tenangkan hati dan pikiran di malam hari ini kamu sudah berhasil melaluinya dengan baiiik... i'm so proud of uuuu 🫶🏻🥹❤️‍🩹"
-      },
-      tidur: {
-        happy: "Yeaaay kamu senang 💗🥰💞 Sleep tight meiii, u did a great job todaaay... so so sooo proud of uuu 💝💐🌍💕",
-        sad: "Kenapa kamu sedih malam ini meiii??? kalau mau cerita aku pasti menerima... kalau tidak mau juga tidak apa... u did good today 🥺🫶🏻💞",
-        neutral: "U did great today meiii 🥰🥰🥰 peluk dari acu biar kamu gak nano - nano 🫂🎀🫶🏻💌💓"
-      }
-    };
-
-    const gifLinks = {
-      pagi: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExand3dHRrZjQ3ZGVhaHU3cXduejQ1N2N3OXY2ZDk3bWNwanhvMGVlbSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/IwZ4nbKj3EnNLNNtu8/giphy.gif",
-      siang: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdHpzYWV4bmEwcGluMnN0czVjZXJqaTR0amtzazc3N2dkNzB4MWQ5ZyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/ZgTRcH0SbiLV1wolnR/giphy.gif",
-      sore: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMDA3eTBhNXIybmEycXR5cHA3ZHg2NndhbHdtMzIzMnV5NGNzOThvMCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/LOEgEYZHyGbXY8KgA3/giphy.gif",
-      malam: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNThmYjEzMTRqbm5qYWFyczlpenNqd2NnOHZhZjY5eXZucTIxcDdmcSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/KFCcK9bQRhh01U6lpS/giphy.gif",
-      tidur: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbjQwbTdrdzNmaTl3ejJjbXl0MnM3ZWtiN2dndHNlMTltc2h4YWwweSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/WP1Z0FfnuMuXqPvDlj/giphy.gif"
-    };
-
-    function getTimePeriod() {
-      const hour = new Date().getHours();
-      if (hour >= 5 && hour < 12) return "pagi";
-      if (hour >= 12 && hour < 17) return "siang";
-      if (hour >= 17 && hour < 19) return "sore";
-      if (hour >= 19 && hour < 22) return "malam";
-      return "tidur";
-    }
-
-    const timePeriod = getTimePeriod();
-    const mainMessage = document.getElementById("main-message");
-    const followup = document.getElementById("followup-message");
-    const gif = document.getElementById("gif");
-
-    setTimeout(() => {
-      mainMessage.innerText = messages[timePeriod];
-      gif.src = gifLinks[timePeriod];
-      document.getElementById("question").style.display = "block";
-    }, 2000);
-
-    const isNight = ["malam", "tidur"].includes(timePeriod);
-    if (isNight) {
-      document.body.style.background = "var(--night-bg)";
-      document.body.style.color = "var(--night-color)";
-      setInterval(() => {
-        const star = document.createElement("div");
-        star.classList.add("stars");
-        star.style.left = Math.random() * window.innerWidth + "px";
-        document.body.appendChild(star);
-        setTimeout(() => star.remove(), 2000);
-      }, 400);
-    }
-
-    function selectMood(mood) {
-      followup.innerText = followUpMessages[timePeriod][mood];
-    }
-
-     const audio = document.getElementById("bgMusic");
+  <h1>Hi Memoi~</h1>
+  <p>Sorry, the person who made this program is currently sick, so the website hasn't been updated. He hopes today will be the best day for you, and he wants you to keep smiling and stay happy.</p>
+  <img src="https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyd2Q2a2Y5OWNzaGR6NGhudWVmMHUwd2ZteGEyeHI1M2oyMDY1aDhiOSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/lvc06kIBXGqh3MLpFU/giphy.gif" alt="Cute GIF for Meimei">
+<script>
+         const audio = document.getElementById("bgMusic");
       audio.volume = 0.2;
 
       document.body.addEventListener("click", () => {
@@ -203,7 +61,6 @@
           audio.play();
         }
       }, { once: true });
-  </script>
+</script>
 </body>
 </html>
-
