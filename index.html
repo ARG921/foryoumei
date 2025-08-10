@@ -1,66 +1,211 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Hi Meimoi!</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Untuk Memoi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      margin: 0;
-      padding: 20px;
-      font-family: sans-serif;
-      text-align: center;
-      transition: background 1s, color 1s;
+    :root{
+      --bg-grad: linear-gradient(135deg,#ffd1e8 0%, #fff1f5 100%);
+      --text:#2b1326;
+      --card-bg: rgba(255,255,255,0.85);
     }
-    h1 {
-      font-size: 2.5em;
-      margin-bottom: 20px;
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family:'Comic Neue', sans-serif;
+      color:var(--text);
+      background:var(--bg-grad);
+      overflow:hidden;
     }
-    p {
-      font-size: 1.1em;
-      margin: 20px auto;
-      max-width: 90%;
-      line-height: 1.5;
+
+    /* Loading overlay */
+    #loading-screen{
+      position:fixed;
+      top:0;left:0;right:0;bottom:0;
+      background:var(--bg-grad);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      z-index:999;
+      transition:opacity 0.6s ease, visibility 0.6s ease;
     }
-    img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 15px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    #loading-screen.hidden{
+      opacity:0;
+      visibility:hidden;
     }
-    audio {
-      display: none;
+    .spinner{
+      width:40px;height:40px;
+      border:4px solid rgba(0,0,0,0.1);
+      border-top:4px solid #ff80ab;
+      border-radius:50%;
+      animation:spin 1s linear infinite;
+      margin-bottom:10px;
     }
-    @media (prefers-color-scheme: dark) {
-      body {
-        background: #2c2c54;
-        color: #f5cce8;
-      }
+    @keyframes spin{
+      to{transform:rotate(360deg);}
     }
-    @media (prefers-color-scheme: light) {
-      body {
-        background: #fff4f4;
-        color: #333;
-      }
+    .loading-text{
+      font-size:16px;
+      font-weight:700;
+      color:rgba(0,0,0,0.7);
     }
+
+    /* Main content */
+    .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;position:relative;}
+    .card{
+      width:100%;
+      max-width:920px;
+      background:var(--card-bg);
+      border-radius:16px;
+      box-shadow:0 10px 30px rgba(20,20,30,0.12);
+      padding:24px;
+      backdrop-filter: blur(6px);
+      position:relative;
+      z-index:5;
+      display:grid;
+      grid-template-columns:1fr 320px;
+      gap:18px;
+      align-items:stretch;
+    }
+    @media (max-width:820px){
+      .card{grid-template-columns:1fr; padding:20px}
+      .gif-wrapper{height:220px}
+    }
+    h1{margin-bottom:8px;font-size:30px;font-weight:700;}
+    p.lead{margin-bottom:16px;font-size:15px;color:rgba(0,0,0,0.6);}
+    .message-box{
+      padding:20px;
+      border-radius:14px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.65));
+      border:2px solid rgba(0,0,0,0.05);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:130px;
+      text-align:center;
+    }
+    #message{
+      font-size:26px;
+      font-weight:700;
+      line-height:1.4;
+      opacity:0;
+      transition:opacity 0.6s ease;
+    }
+    #message.show{opacity:1;}
+    .gif-wrapper{
+      width:100%;
+      height:100%;
+    }
+    .gif{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      border-radius:12px;
+      border:6px solid rgba(255,255,255,0.6);
+    }
+    #starfield{position:fixed;inset:0;z-index:1;pointer-events:none}
   </style>
 </head>
 <body>
+  <!-- Loading -->
+  <div id="loading-screen">
+    <div class="spinner"></div>
+    <div class="loading-text">Memuat untuk Memoi...</div>
+  </div>
+
+  <canvas id="starfield"></canvas>
+  <div class="wrap" style="visibility:hidden;">
+    <div class="card" id="card">
+      <div>
+        <h1>🌟 Untuk Memoi 💌</h1>
+        <p class="lead" id="timeLabel">—</p>
+        <div class="message-box">
+          <div id="message">Halo...</div>
+        </div>
+      </div>
+      <div class="gif-wrapper">
+        <img id="timeGif" class="gif" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ2RzeXlmbnhoZW1yNTI2eWNrbjB5eHE5M2tpazlsbWhyd3pyNjhjdyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/bOQeC2SNniMNy/giphy.gif" alt="GIF untuk Memoi">
+      </div>
+    </div>
+  </div>
+
   <audio autoplay loop id="bgMusic">
     <source src="musiklembut.mp3" type="audio/mpeg" />
   </audio>
-  <h1>Hi Memoi~</h1>
-  <p>Sorry, the person who made this program is currently sick, so the website hasn't been updated. He hopes today will be the best day for you, and he wants you to keep smiling and stay happy.</p>
-  <img src="https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyd2Q2a2Y5OWNzaGR6NGhudWVmMHUwd2ZteGEyeHI1M2oyMDY1aDhiOSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/lvc06kIBXGqh3MLpFU/giphy.gif" alt="Cute GIF for Meimei">
-<script>
-         const audio = document.getElementById("bgMusic");
-      audio.volume = 0.2;
 
-      document.body.addEventListener("click", () => {
-        if (audio.paused) {
-          audio.play();
-        }
-      }, { once: true });
-</script>
+  <script>
+    const config = {
+      periods: [
+        { id:'morning', range:[5,12], label:'Pagi (05:00–12:59)', gradient:'linear-gradient(135deg,#ffd1e8 0%, #fff1f5 100%)', gif:'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExZXV0cndzNnV5aHQ5ZWRva3FyNmU3N2Fqd3d5czRlYWYybjVkbjdsNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/QhWsAPnbV3GvhMLILO/giphy.gif', messages:['Pagiii, meiii. Happy Sunday yaaa, selamat ibadaaah 😌🙏'] },
+        { id:'afternoon', range:[13,16], label:'Siang (13:00–16:59)', gradient:'linear-gradient(135deg,#c9f0ff 0%, #fffdf0 100%)', gif:'https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3hpZW02YXRsejJoY2l1cDYwNXpncDM1cmhvaHJyeDM1bjJvdjB5NiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/BbmDhO2gx3o96CpVM1/giphy.gif', messages:['Selamat siang mbak, selamat makan siang yaaa 😋🍽️, hati - hati di jalaaaan ❤️‍🩹🤞🤧🔜 (berkabar yaaa 🥺👉👈)'] },
+        { id:'evening', range:[17,18], label:'Sore (17:00–18:59)', gradient:'linear-gradient(135deg,#ffd8a8 0%, #fff1e6 100%)', gif:'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExcHlxZHd1cGVkcXJ5b3huN244Z3M3cWMyYTc0M2g5eXpncHlpeTlieiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/27bTQ0NagT4UDZ5pJd/giphy.gif', messages:['Makan pare pakai sambel, selamat sore manusia hobi bikin sebel 🤭🤭🤭. Kalau kamu sudah pulang selamat menikmati sisa hari minggu ini yaaa 😎🤙, kalau belum semoga kamu berhati - hati disana dan semangaaat 🤗🥰🫶❤️‍🩹'] },
+        { id:'night', range:[19,22], label:'Malam (19:00–22:59)', gradient:'linear-gradient(135deg,#cdb4db 0%, #8ec5fc 100%)', gif:'https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExam5tZTYwaWQzMGJnMHc5YnR1eDR0ZHZwdWpkemxpaWZ0M2h4eXJ2dSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/k0ocN5zWjIwqaUhiYz/giphy.gif', messages:['Selamat malaaam meiii, semoga kamu sudah dirumah yaaa, maaf kalau kesannya diriku terlalu lebay kalau ngechat apa apa kangen, sekali lagi maaf 😔😐🥺'], dark:true },
+        { id:'late', range:[], label:'Larut (22:00–04:59)', gradient:'linear-gradient(135deg,#1b1b2f 0%, #0f172a 100%)', gif:'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExaGJiYzRwOTgxbTN6MTluNDN6Yms5Y2F0cHgzZ3AxemQzdTJtYmJmZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/E549VaHiMjknS/giphy.gif', messages:['Waktunya tidur meiii, sweet dreams yaaa 😴😪🥱💤🛌🏼'], dark:true }
+      ]
+    };
+
+    function getHour(){return new Date().getHours();}
+    function findPeriod(hour){
+      for(const p of config.periods){
+        if(p.range.length && hour>=p.range[0] && hour<=p.range[1]) return p;
+      }
+      return config.periods.find(p=>p.id==='late');
+    }
+
+    const messageEl=document.getElementById('message');
+    const timeLabel=document.getElementById('timeLabel');
+    const gifEl=document.getElementById('timeGif');
+
+    function showMessage(text){
+      messageEl.classList.remove('show');
+      setTimeout(()=>{
+        messageEl.textContent=text;
+        messageEl.classList.add('show');
+      },200);
+    }
+
+    function renderForHour(hour){
+      const p=findPeriod(hour);
+      document.body.style.background=p.gradient;
+      if(p.dark){
+        document.documentElement.style.setProperty('--text','#fff');
+        document.documentElement.style.setProperty('--card-bg','rgba(0,0,0,0.45)');
+      }else{
+        document.documentElement.style.setProperty('--text','#2b1326');
+        document.documentElement.style.setProperty('--card-bg','rgba(255,255,255,0.85)');
+      }
+      timeLabel.textContent=p.label;
+      gifEl.src=p.gif;
+      const msg = p.messages[Math.floor(Math.random()*p.messages.length)];
+      showMessage(msg);
+    }
+
+    // Loading control
+    window.addEventListener('load',()=>{
+      setTimeout(()=>{
+        document.getElementById('loading-screen').classList.add('hidden');
+        document.querySelector('.wrap').style.visibility='visible';
+        renderForHour(getHour());
+        setInterval(()=>renderForHour(getHour()),60000);
+      },1500);
+    });
+
+    // Starfield
+    const canvas=document.getElementById('starfield');
+    const ctx=canvas.getContext('2d');
+    function resize(){canvas.width=innerWidth;canvas.height=innerHeight;}
+    window.addEventListener('resize',resize);resize();
+    let stars=[];function createStar(){return{x:Math.random()*canvas.width,y:-10-Math.random()*200,size:Math.random()*2+0.6,speed:0.6+Math.random()*2.2,life:0};}
+    for(let i=0;i<40;i++)stars.push(createStar());
+    function updateStars(){ctx.clearRect(0,0,canvas.width,canvas.height);for(let i=0;i<stars.length;i++){const s=stars[i];s.y+=s.speed;s.x+=Math.sin((s.y+s.life)/50)*0.4;s.life+=0.02;ctx.beginPath();ctx.globalAlpha=Math.max(0,1-s.life*0.02);ctx.fillStyle='rgba(255,255,255,0.8)';ctx.arc(s.x,s.y,s.size,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;if(s.y>canvas.height+20||s.life>300)stars[i]=createStar();}requestAnimationFrame(updateStars);}updateStars();
+
+    // Audio control
+    const audio=document.getElementById("bgMusic");
+    audio.volume=0.2;
+    document.body.addEventListener("click",()=>{if(audio.paused){audio.play();}},{once:true});
+  </script>
 </body>
 </html>
